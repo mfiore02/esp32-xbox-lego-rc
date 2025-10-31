@@ -120,11 +120,11 @@ static const uint8_t LEGO_CMD_HEADER[LEGO_CMD_HEADER_SIZE] = {
 // ============================================================================
 
 // Enable/disable debug output
-#define DEBUG_ENABLED       true
-#define DEBUG_BLE           true
-#define DEBUG_XBOX          true
-#define DEBUG_LEGO          true
-#define DEBUG_CONTROLS      true
+#define DEBUG_ENABLED       1
+#define DEBUG_BLE           1
+#define DEBUG_XBOX          1
+#define DEBUG_LEGO          1
+#define DEBUG_CONTROLS      1
 
 // Debug macros
 #if DEBUG_ENABLED
