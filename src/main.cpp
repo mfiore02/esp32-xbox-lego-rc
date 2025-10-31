@@ -56,6 +56,9 @@ void setup() {
     Serial.begin(115200);
     delay(1000);  // Wait for serial to initialize
 
+    // Set global log level to reduce verbosity
+    esp_log_level_set("*", ESP_LOG_WARN);  // Default to WARN for all components
+
     DEBUG_PRINTLN("========================================");
     DEBUG_PRINTLN(PROJECT_NAME);
     DEBUG_PRINTLN("Version: " PROJECT_VERSION);

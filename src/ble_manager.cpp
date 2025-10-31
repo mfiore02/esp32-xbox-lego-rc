@@ -289,13 +289,19 @@ void AdvertisedDeviceCallbacks::onResult(NimBLEAdvertisedDevice* advertisedDevic
     NimBLEAddress deviceAddress = advertisedDevice->getAddress();
     int rssi = advertisedDevice->getRSSI();
 
-    DEBUG_BLE_PRINTF("[BLE] Found device: %s (%s) RSSI: %d\n",
-                     deviceName.c_str(),
-                     deviceAddress.toString().c_str(),
-                     rssi);
+    // Only log devices we're interested in (Xbox or Lego)
+    bool isXbox = deviceName.startsWith(XBOX_CONTROLLER_NAME_PREFIX);
+    bool isLego = deviceName.indexOf(LEGO_HUB_NAME) >= 0;
+
+    if (isXbox || isLego) {
+        DEBUG_BLE_PRINTF("[BLE] Found device: %s (%s) RSSI: %d\n",
+                         deviceName.c_str(),
+                         deviceAddress.toString().c_str(),
+                         rssi);
+    }
 
     // Check if this is an Xbox controller
-    if (!bleManager->foundXbox() && deviceName.startsWith(XBOX_CONTROLLER_NAME_PREFIX)) {
+    if (!bleManager->foundXbox() && isXbox) {
         DEBUG_BLE_PRINTLN("[BLE] *** FOUND XBOX CONTROLLER! ***");
         DeviceInfo info;
         info.name = deviceName;
@@ -309,7 +315,7 @@ void AdvertisedDeviceCallbacks::onResult(NimBLEAdvertisedDevice* advertisedDevic
     }
 
     // Check if this is a Lego hub
-    if (!bleManager->foundLego() && deviceName.indexOf(LEGO_HUB_NAME) >= 0) {
+    if (!bleManager->foundLego() && isLego) {
         DEBUG_BLE_PRINTLN("[BLE] *** FOUND LEGO HUB! ***");
         DeviceInfo info;
         info.name = deviceName;
