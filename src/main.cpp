@@ -83,8 +83,13 @@ void setup() {
 
 void loop() {
     unsigned long currentMillis = millis();
+    static unsigned long lastDisplayUpdate = 0;
     
-    updateDisplay();
+    if (lastDisplayUpdate < (currentMillis - DISPLAY_UPDATE_PERIOD_MS))
+    {
+        updateDisplay();
+        lastDisplayUpdate = currentMillis;
+    }
 
     // State machine
     switch (currentState) {
