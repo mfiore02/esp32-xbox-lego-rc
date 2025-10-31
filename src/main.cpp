@@ -40,6 +40,7 @@ void initBLE();
 void startScanning();
 void updateControlLoop();
 void updateDisplay();
+void updateSerial();
 void handleError(ErrorCode error);
 
 // ============================================================================
@@ -83,12 +84,19 @@ void setup() {
 
 void loop() {
     unsigned long currentMillis = millis();
-    static unsigned long lastDisplayUpdate = 0;
     
+    static unsigned long lastDisplayUpdate = 0;
     if (lastDisplayUpdate < (currentMillis - DISPLAY_UPDATE_PERIOD_MS))
     {
         updateDisplay();
         lastDisplayUpdate = currentMillis;
+    }
+    
+    static unsigned long lastSerialUpdate = 0;
+    if (lastSerialUpdate < (currentMillis - SERIAL_UPDATE_PERIOD_MS))
+    {
+        updateSerial();
+        lastSerialUpdate = currentMillis;
     }
 
     // State machine
@@ -204,21 +212,18 @@ void updateControlLoop() {
 
 void updateDisplay() {
     // TODO: Update OLED display (if present)
-    // TODO: Print status to serial
+}
 
-    // Placeholder - print simple status
-    static int displayCounter = 0;
-    if (++displayCounter % 5 == 0) {  // Every 5 updates (5 seconds at 1Hz)
-        DEBUG_PRINTLN("\n========== Status ==========");
-        DEBUG_PRINTF("State: %s\n",
-            currentState == AppState::INIT ? "INIT" :
-            currentState == AppState::SCANNING ? "SCANNING" :
-            currentState == AppState::CONNECTING ? "CONNECTING" :
-            currentState == AppState::CONNECTED ? "CONNECTED" :
-            currentState == AppState::ACTIVE ? "ACTIVE" : "ERROR");
-        DEBUG_PRINTF("Uptime: %lu seconds\n", millis() / 1000);
-        DEBUG_PRINTLN("============================\n");
-    }
+void updateSerial() {
+    DEBUG_PRINTLN("\n========== Status ==========");
+    DEBUG_PRINTF("State: %s\n",
+        currentState == AppState::INIT ? "INIT" :
+        currentState == AppState::SCANNING ? "SCANNING" :
+        currentState == AppState::CONNECTING ? "CONNECTING" :
+        currentState == AppState::CONNECTED ? "CONNECTED" :
+        currentState == AppState::ACTIVE ? "ACTIVE" : "ERROR");
+    DEBUG_PRINTF("Uptime: %lu seconds\n", millis() / 1000);
+    DEBUG_PRINTLN("============================\n");
 }
 
 // ============================================================================
