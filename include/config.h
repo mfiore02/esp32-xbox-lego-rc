@@ -69,8 +69,7 @@
 #define DISPLAY_UPDATE_PERIOD_MS    (1000 / DISPLAY_UPDATE_FREQUENCY_HZ)
 
 // Serial Update Timing
-#define SERIAL_UPDATE_FREQUENCY_HZ 1    // Serial update rate (1Hz = 1s)
-#define SERIAL_UPDATE_PERIOD_MS    (1000 / SERIAL_UPDATE_FREQUENCY_HZ)
+#define SERIAL_UPDATE_PERIOD_MS    (3000)
 
 // ============================================================================
 // Lego Hub Protocol Constants
