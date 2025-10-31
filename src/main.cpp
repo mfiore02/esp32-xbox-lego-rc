@@ -330,35 +330,53 @@ void updateSerial() {
 // ============================================================================
 
 void handleError(ErrorCode error) {
-    currentState = AppState::ERROR;
-
     DEBUG_PRINTLN("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     DEBUG_PRINTF("ERROR: Code %d\n", error);
 
     switch (error) {
         case ERR_BLE_INIT_FAILED:
             DEBUG_PRINTLN("BLE initialization failed");
+            currentState = AppState::ERROR;
             break;
         case ERR_XBOX_NOT_FOUND:
             DEBUG_PRINTLN("Xbox controller not found");
+            currentState = AppState::ERROR;
             break;
         case ERR_LEGO_NOT_FOUND:
             DEBUG_PRINTLN("Lego hub not found");
+            currentState = AppState::ERROR;
             break;
         case ERR_XBOX_CONNECT_FAILED:
             DEBUG_PRINTLN("Failed to connect to Xbox controller");
+            currentState = AppState::ERROR;
             break;
         case ERR_LEGO_CONNECT_FAILED:
             DEBUG_PRINTLN("Failed to connect to Lego hub");
+            currentState = AppState::ERROR;
             break;
         case ERR_XBOX_DISCONNECTED:
             DEBUG_PRINTLN("Xbox controller disconnected");
+            DEBUG_PRINTLN("Will attempt reconnection...");
+            if (bleManager) {
+                bleManager->resetForReconnection();
+            }
+            delay(2000);  // Wait 2 seconds before rescanning
+            currentState = AppState::SCANNING;
+            startScanning();
             break;
         case ERR_LEGO_DISCONNECTED:
             DEBUG_PRINTLN("Lego hub disconnected");
+            DEBUG_PRINTLN("Will attempt reconnection...");
+            if (bleManager) {
+                bleManager->resetForReconnection();
+            }
+            delay(2000);  // Wait 2 seconds before rescanning
+            currentState = AppState::SCANNING;
+            startScanning();
             break;
         default:
             DEBUG_PRINTLN("Unknown error");
+            currentState = AppState::ERROR;
             break;
     }
 

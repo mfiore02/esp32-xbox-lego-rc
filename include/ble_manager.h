@@ -91,6 +91,9 @@ public:
     void handleXboxDisconnect();
     void handleLegoDisconnect();
 
+    // Reset for reconnection
+    void resetForReconnection();
+
 private:
     // BLE clients
     NimBLEClient* xboxClient;

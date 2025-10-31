@@ -241,6 +241,23 @@ void BLEManager::handleLegoDisconnect() {
     legoState = BLEState::DISCONNECTED;
 }
 
+void BLEManager::resetForReconnection() {
+    DEBUG_BLE_PRINTLN("[BLE] Resetting for reconnection...");
+
+    // Disconnect both devices if connected
+    disconnectAll();
+
+    // Reset device info
+    resetDeviceInfo(xboxInfo);
+    resetDeviceInfo(legoInfo);
+
+    // Reset states
+    xboxState = BLEState::IDLE;
+    legoState = BLEState::IDLE;
+
+    DEBUG_BLE_PRINTLN("[BLE] Reset complete, ready to scan");
+}
+
 void BLEManager::resetDeviceInfo(DeviceInfo& info) {
     info.name = "";
     info.address = NimBLEAddress("");
